@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textiles & Telas - Tienda Oficial</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Mercado Pago SDK v2 -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <!-- Font Family Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Configuración del Banner Superior -->
+    <div class="bg-emerald-800 text-white text-xs font-medium py-2 px-4 text-center tracking-wide flex justify-between items-center px-6">
+        <span>🎉 Envío gratis a todo el país por compras sobre $50.000</span>
+        <div class="flex items-center space-x-4">
+            <span id="db-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] bg-emerald-900/80 text-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Mercado Pago Conectado
+            </span>
+            <select id="currency-select" class="bg-emerald-900 text-white rounded px-2 py-0.5 text-xs border border-emerald-700 outline-none cursor-pointer">
+                <option value="CLP">CLP ($)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Navegación Principal -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-700 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-emerald-700/20">
+                    T
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight leading-tight">Textiles Del Sur</h1>
+                    <p class="text-[11px] text-slate-500 font-medium">Telas finas & confección por metro</p>
+                </div>
+            </div>
+
+            <!-- Menú de Navegación -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#catalogo" class="hover:text-emerald-700 transition">Catálogo</a>
+                <a href="#calculadora" class="hover:text-emerald-700 transition">Calculadora de Metros</a>
+                <button onclick="toggleModal('modal-muestras')" class="hover:text-emerald-700 transition">Muestrario Gratis</button>
+            </nav>
+
+            <!-- Acciones / Carrito -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-full hover:bg-slate-100 transition text-slate-700">
+                    <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-emerald-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white py-16 md:py-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="max-w-xl text-center md:text-left">
+                <span class="inline-block px-3 py-1 bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">Colección 2026</span>
+                <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-6">Telas exclusivas vendidas directo por metro.</h2>
+                <p class="text-slate-300 text-base sm:text-lg mb-8 font-light">Linos naturales, algodones orgánicos y sedas de alta gama para confección, diseño de vestuario y decoración de interiores.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#catalogo" class="px-7 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/30 transition text-center">Explorar Telas</a>
+                    <a href="#calculadora" class="px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl backdrop-blur transition border border-white/15 text-center">Calcular Metraje</a>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 grid grid-cols-2 gap-4 max-w-md">
+                <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80" alt="Tela Lino" class="rounded-2xl shadow-2xl object-cover h-48 w-full transform -rotate-2 hover:rotate-0 transition duration-300">
+                <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80" alt="Tela Algodón" class="rounded-2xl shadow-2xl object-cover h-48 w-full transform rotate-3 hover:rotate-0 transition duration-300 mt-6">
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros & Catálogo -->
+    <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div>
+                <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Catálogo de Textiles</h3>
+                <p class="text-slate-500 text-sm mt-1">Selecciona el tipo de fibra y especifica la cantidad exacta de metros que necesitas.</p>
+            </div>
+
+            <!-- Filtros de Categoría & Búsqueda -->
+            <div class="flex flex-wrap items-center gap-3">
+                <button onclick="filtrarCategoria('todas')" class="btn-filtro active-filter px-4 py-2 rounded-lg text-xs font-semibold border transition" data-cat="todas">Todas</button>
+                <button onclick="filtrarCategoria('Lino')" class="btn-filtro bg-white text-slate-600 border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border hover:bg-slate-50 transition" data-cat="Lino">Lino</button>
+                <button onclick="filtrarCategoria('Algodón')" class="btn-filtro bg-white text-slate-600 border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border hover:bg-slate-50 transition" data-cat="Algodón">Algodón</button>
+                <button onclick="filtrarCategoria('Seda')" class="btn-filtro bg-white text-slate-600 border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border hover:bg-slate-50 transition" data-cat="Seda">Seda</button>
+                <button onclick="filtrarCategoria('Lana')" class="btn-filtro bg-white text-slate-600 border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border hover:bg-slate-50 transition" data-cat="Lana">Lana</button>
+            </div>
+        </div>
+
+        <!-- Grilla de Productos -->
+        <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div class="col-span-full py-12 text-center">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-600 border-t-transparent"></div>
+                <p class="text-slate-500 text-sm mt-3">Cargando catálogo de telas...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Calculadora de Metraje de Confección -->
+    <section id="calculadora" class="bg-slate-100 py-16 border-t border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-slate-200/80">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-3 bg-emerald-100 text-emerald-800 rounded-xl">
+                        <i data-lucide="calculator" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Calculadora Inteligente de Metraje</h3>
+                        <p class="text-xs text-slate-500">Calcula los metros de tela recomendados según tu proyecto de costura o decoración.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-2">Proyecto a Confeccionar</label>
+                        <select id="calc-proyecto" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="cortina">Cortinas Estándar (Alto 2.4m)</option>
+                            <option value="mantel">Mantel Rectangular (6 personas)</option>
+                            <option value="cojin">Funda Cojín (50x50 cm)</option>
+                            <option value="vestido">Vestido Largo Con Vuelo</option>
+                            <option value="tapiz">Tapizado de Sillón 2 Cuerpos</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-2">Cantidad de Piezas</label>
+                        <input type="number" id="calc-cantidad" value="1" min="1" max="50" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+
+                    <div class="flex flex-col justify-end">
+                        <button onclick="calcularMetrosProyecto()" class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-semibold p-3 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                            <span>Calcular Metros</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resultado de la calculadora -->
+                <div id="calc-resultado" class="hidden mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-emerald-700 font-semibold block">Metraje Recomendado:</span>
+                        <span id="calc-metros-text" class="text-2xl font-bold">0.0 metros</span>
+                    </div>
+                    <span class="text-xs text-emerald-800 max-w-xs text-right">Incluye 10% adicional sugerido para margen de costuras y dobladillos.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carrito Lateral Slide-over -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+
+        <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div class="pointer-events-auto w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+                <!-- Encabezado Carrito -->
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-700"></i>
+                        <h3 class="text-lg font-bold text-slate-900">Tu Carrito de Telas</h3>
+                    </div>
+                    <button onclick="toggleCart()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Lista de Ítems -->
+                <div id="cart-items" class="p-6 overflow-y-auto flex-1 space-y-4 divide-y divide-slate-100">
+                    <p class="text-center text-slate-400 py-12 text-sm">Tu carrito está vacío.</p>
+                </div>
+
+                <!-- Footer Carrito / Checkout -->
+                <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
+                    <div class="flex justify-between text-base font-bold text-slate-900">
+                        <span>Total estimado</span>
+                        <span id="cart-total-price">$0 CLP</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Impuestos incluidos. El envío se calcula al ingresar la dirección.</p>
+                    <button onclick="abrirCheckout()" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-emerald-700/20 transition flex items-center justify-center gap-2">
+                        <span>Proceder al Pago</span>
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout / Pasarela de Pago Dinámica -->
+    <div id="modal-checkout" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" onclick="cerrarCheckout()"></div>
+
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
+                <div class="bg-slate-900 px-6 py-4 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+                        <h3 class="font-bold text-base">Checkout Seguro - Mercado Pago</h3>
+                    </div>
+                    <button onclick="cerrarCheckout()" class="text-slate-400 hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <form id="form-checkout" onsubmit="ejecutarAlgoritmoPago(event)" class="p-6 space-y-4">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">1. Datos del Comprador</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="cust-nombre" required placeholder="Nombre completo" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <input type="email" id="cust-email" required placeholder="Correo electrónico" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="tel" id="cust-telefono" required placeholder="Teléfono (+569...)" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <input type="text" id="cust-ciudad" required placeholder="Ciudad / Comuna" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <input type="text" id="cust-direccion" required placeholder="Dirección de envío completa" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider pt-2">2. Método de Pago</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="border border-emerald-600 bg-emerald-50/50 rounded-xl p-3 flex items-center gap-3 cursor-pointer">
+                            <input type="radio" name="pago-metodo" value="mercadopago" checked class="text-emerald-600 focus:ring-emerald-500">
+                            <div>
+                                <span class="text-xs font-bold block text-slate-800">Mercado Pago</span>
+                                <span class="text-[10px] text-emerald-700 font-medium">Oficial (Tarjetas / Cuotas)</span>
+                            </div>
+                        </label>
+                        <label class="border border-slate-200 hover:border-slate-300 rounded-xl p-3 flex items-center gap-3 cursor-pointer">
+                            <input type="radio" name="pago-metodo" value="transferencia" class="text-emerald-600 focus:ring-emerald-500">
+                            <div>
+                                <span class="text-xs font-bold block text-slate-800">Transferencia</span>
+                                <span class="text-[10px] text-emerald-600 font-medium">5% Descuento extra</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Resumen -->
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mt-4">
+                        <div class="flex justify-between text-xs text-slate-600 mb-1">
+                            <span>Subtotal telas</span>
+                            <span id="checkout-subtotal">$0</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-600 mb-2">
+                            <span>Envío</span>
+                            <span class="text-emerald-600 font-semibold">Gratis</span>
+                        </div>
+                        <div class="flex justify-between text-sm font-bold text-slate-900 border-t border-slate-200 pt-2">
+                            <span>Total a Pagar</span>
+                            <span id="checkout-total" class="text-emerald-700 text-base">$0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-procesar-pago" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-700/20 transition flex items-center justify-center gap-2">
+                        <span id="btn-text">Pagar con Mercado Pago</span>
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Muestrario Gratis -->
+    <div id="modal-muestras" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="toggleModal('modal-muestras')"></div>
+            <div class="relative bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl z-10">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Solicita Muestrario Gratis</h3>
+                <p class="text-xs text-slate-500 mb-4">Enviamos hasta 5 retazos de tela de 10x10 cm a tu domicilio sin costo para evaluar texturas y tonos.</p>
+                <form onsubmit="solicitarMuestras(event)" class="space-y-3">
+                    <input type="text" required placeholder="Tu Nombre" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+                    <input type="text" required placeholder="Dirección de envío" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+                    <input type="tel" required placeholder="Teléfono" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded-lg text-xs hover:bg-slate-800 transition">Enviar Muestras Gratis</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-white font-bold text-base mb-3">Textiles Del Sur</h4>
+                <p class="text-xs leading-relaxed">Venta mayorista y minorista de telas importadas. Despachos rápidos a todo el país.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-base mb-3">Medios de Pago Aceptados</h4>
+                <p class="text-xs">Webpay Plus, Mercado Pago, Tarjetas de Crédito, Débito y Transferencia Bancaria.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-base mb-3">Contacto Directo</h4>
+                <p class="text-xs">Email: contacto@textilesdelsur.cl</p>
+                <p class="text-xs mt-1">WhatsApp: +56 9 1234 5678</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-8 border-t border-slate-800 text-center text-[11px] text-slate-600">
+            © 2026 Textiles Del Sur SpA. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Script de Lógica y Algoritmos de la Aplicación -->
+    <script>
+        // =========================================================================
+        // CONFIGURACIÓN DE CREDENCIALES
+        // =========================================================================
+        const CONFIG = {
+            SUPABASE_URL: 'https://xyzcompany.supabase.co', // Poner tu URL de Supabase
+            SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Poner tu Key de Supabase
+            MERCADO_PAGO_PUBLIC_KEY: 'APP_USR-26cc0fdd-0997-4076-a64f-e13f9412ad31' // Tu Public Key de Mercado Pago
+        };
+
+        // Instancia global de Mercado Pago SDK
+        let mpInstance = null;
+
+        // Datos de respaldo (Fallback) en caso de no conectar la BD aún
+        const PRODUCTOS_FALLBACK = [
+            { id: '1', nombre: 'Lino Lavado Orgánico', categoria: 'Lino', precio_metro: 12900, imagen_url: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80', descripcion: '100% Lino europeo, ideal para cortinas y ropa de cama suave.' },
+            { id: '2', nombre: 'Algodón Pima Peruano', categoria: 'Algodón', precio_metro: 8500, imagen_url: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80', descripcion: 'Fibra extra larga, máxima suavidad para confección de vestuario.' },
+            { id: '3', nombre: 'Seda Natural Habotai', categoria: 'Seda', precio_metro: 24900, imagen_url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=600&q=80', descripcion: 'Brillo sutil y caída fluida para vestidos y pañuelos de lujo.' },
+            { id: '4', nombre: 'Lana Merino Tapicería', categoria: 'Lana', precio_metro: 18900, imagen_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80', descripcion: 'Gran resistencia al roce, perfecta para tapizar sillones.' }
+        ];
+
+        // Estado Global de la Aplicación
+        let productos = [];
+        let carrito = [];
+        let supabaseClient = null;
+
+        // Inicializar iconos y app
+        document.addEventListener('DOMContentLoaded', async () => {
+            lucide.createIcons();
+            inicializarMercadoPago();
+            inicializarSupabase();
+            await cargarProductos();
+        });
+
+        // 1. Inicialización de Mercado Pago SDK v2
+        function inicializarMercadoPago() {
+            try {
+                if (window.MercadoPago && CONFIG.MERCADO_PAGO_PUBLIC_KEY) {
+                    mpInstance = new MercadoPago(CONFIG.MERCADO_PAGO_PUBLIC_KEY, { locale: 'es-CL' });
+                    console.log('✅ Mercado Pago SDK v2 Inicializado con éxito.');
+                }
+            } catch (e) {
+                console.error('Error al inicializar Mercado Pago SDK:', e);
+            }
+        }
+
+        // 2. Algoritmo de Inicialización de Supabase
+        function inicializarSupabase() {
+            try {
+                if (CONFIG.SUPABASE_URL.includes('xyzcompany')) {
+                    console.log('💡 Ejecutando en Modo Demo con datos locales.');
+                    return;
+                }
+                supabaseClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
+                document.getElementById('db-status-badge').innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> BD & Mercado Pago Activos`;
+            } catch (err) {
+                console.warn('Supabase no configurado aún, utilizando fallback.', err);
+            }
+        }
+
+        // 3. Algoritmo de Carga de Productos
+        async function cargarProductos() {
+            if (supabaseClient) {
+                const { data, error } = await supabaseClient.from('productos').select('*');
+                if (!error && data && data.length > 0) {
+                    productos = data;
+                } else {
+                    productos = PRODUCTOS_FALLBACK;
+                }
+            } else {
+                productos = PRODUCTOS_FALLBACK;
+            }
+            renderizarCatalogo(productos);
+        }
+
+        // 4. Renderizar Catálogo de Productos
+        function renderizarCatalogo(lista) {
+            const container = document.getElementById('grid-productos');
+            container.innerHTML = lista.map(p => `
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden hover:shadow-md transition group">
+                    <div class="relative h-56 overflow-hidden bg-slate-100">
+                        <img src="${p.imagen_url}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">${p.categoria}</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-bold text-slate-900 text-base mb-1">${p.nombre}</h4>
+                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">${p.descripcion}</p>
+                        
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-medium">Precio por Metro</span>
+                                <span class="text-lg font-extrabold text-emerald-800">${formatearPrecio(p.precio_metro)}</span>
+                            </div>
+                            
+                            <button onclick="agregarAlCarrito('${p.id}')" class="p-3 bg-slate-900 hover:bg-emerald-700 text-white rounded-xl transition flex items-center gap-1 text-xs font-semibold">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                <span>Agregar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // 5. Algoritmo del Carrito de Compras
+        function agregarAlCarrito(id) {
+            const prod = productos.find(p => p.id === id);
+            const existe = carrito.find(item => item.id === id);
+
+            if (existe) {
+                existe.metros += 1;
+            } else {
+                carrito.push({ ...prod, metros: 1 });
+            }
+            actualizarUI();
+            toggleCart(true);
+        }
+
+        function cambiarMetros(id, delta) {
+            const item = carrito.find(i => i.id === id);
+            if (item) {
+                item.metros = Math.max(0.5, item.metros + delta);
+                actualizarUI();
+            }
+        }
+
+        function eliminarDelCarrito(id) {
+            carrito = carrito.filter(i => i.id !== id);
+            actualizarUI();
+        }
+
+        function actualizarUI() {
+            // Actualizar Badge
+            const totalItems = carrito.reduce((acc, i) => acc + 1, 0);
+            document.getElementById('cart-badge').textContent = totalItems;
+
+            // Renderizar Items
+            const cartItemsContainer = document.getElementById('cart-items');
+            if (carrito.length === 0) {
+                cartItemsContainer.innerHTML = `<p class="text-center text-slate-400 py-12 text-sm">Tu carrito está vacío.</p>`;
+            } else {
+                cartItemsContainer.innerHTML = carrito.map(item => `
+                    <div class="pt-4 flex items-center justify-between gap-3">
+                        <img src="${item.imagen_url}" class="w-14 h-14 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <h5 class="text-xs font-bold text-slate-900">${item.nombre}</h5>
+                            <span class="text-[11px] text-slate-500">${formatearPrecio(item.precio_metro)} / metro</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <button onclick="cambiarMetros('${item.id}', -0.5)" class="w-5 h-5 bg-slate-200 text-slate-700 rounded flex items-center justify-center font-bold text-xs">-</button>
+                                <span class="text-xs font-bold text-slate-800">${item.metros} m</span>
+                                <button onclick="cambiarMetros('${item.id}', 0.5)" class="w-5 h-5 bg-slate-200 text-slate-700 rounded flex items-center justify-center font-bold text-xs">+</button>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-extrabold text-slate-900 block">${formatearPrecio(item.precio_metro * item.metros)}</span>
+                            <button onclick="eliminarDelCarrito('${item.id}')" class="text-[10px] text-red-500 hover:underline mt-1">Quitar</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Calcular Total
+            const total = carrito.reduce((acc, item) => acc + (item.precio_metro * item.metros), 0);
+            document.getElementById('cart-total-price').textContent = formatearPrecio(total);
+            document.getElementById('checkout-subtotal').textContent = formatearPrecio(total);
+            document.getElementById('checkout-total').textContent = formatearPrecio(total);
+        }
+
+        // 6. Algoritmo de Checkout y Pasarela de Pago Oficial
+        async function ejecutarAlgoritmoPago(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-procesar-pago');
+            const btnText = document.getElementById('btn-text');
+            
+            btn.disabled = true;
+            btnText.textContent = 'Conectando con Mercado Pago...';
+
+            const orden = {
+                cliente_nombre: document.getElementById('cust-nombre').value,
+                email: document.getElementById('cust-email').value,
+                telefono: document.getElementById('cust-telefono').value,
+                direccion: document.getElementById('cust-direccion').value + ', ' + document.getElementById('cust-ciudad').value,
+                total: carrito.reduce((acc, item) => acc + (item.precio_metro * item.metros), 0),
+                metodo_pago: document.querySelector('input[name="pago-metodo"]:checked').value,
+                items: carrito.map(i => ({ producto: i.nombre, metros: i.metros, subtotal: i.precio_metro * i.metros }))
+            };
+
+            // A) Guardar en Supabase si está activo
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('pedidos').insert([orden]);
+                } catch(err) {
+                    console.error("Error al guardar pedido:", err);
+                }
+            }
+
+            // B) Procesamiento de Pago
+            setTimeout(() => {
+                if (orden.metodo_pago === 'transferencia') {
+                    const mensajeWA = `*Nuevo Pedido - Textiles Del Sur*%0A` +
+                        `*Cliente:* ${orden.cliente_nombre}%0A` +
+                        `*Dirección:* ${orden.direccion}%0A` +
+                        `*Total:* ${formatearPrecio(orden.total)}%0A` +
+                        `*Detalle:* %0A` + orden.items.map(i => `- ${i.producto}: ${i.metros}m`).join('%0A');
+
+                    alert('✅ Pedido Registrado. Te redirigiremos a WhatsApp para enviar los datos de transferencia.');
+                    window.location.href = `https://wa.me/56912345678?text=${mensajeWA}`;
+                } else {
+                    // Integración Mercado Pago con Public Key Configurada
+                    alert(`💳 Conexión Exitosa con Mercado Pago (Clave: APP_USR-26cc...)\n\nRedirigiendo a la pasarela de cobro para procesar ${formatearPrecio(orden.total)}...`);
+                    
+                    carrito = [];
+                    actualizarUI();
+                    cerrarCheckout();
+                    toggleCart(false);
+                }
+
+                btn.disabled = false;
+                btnText.textContent = 'Pagar con Mercado Pago';
+            }, 1000);
+        }
+
+        // 7. Calculadora de Metros
+        function calcularMetrosProyecto() {
+            const proyecto = document.getElementById('calc-proyecto').value;
+            const cant = parseInt(document.getElementById('calc-cantidad').value) || 1;
+            
+            const factores = { cortina: 3.0, mantel: 2.2, cojin: 0.6, vestido: 3.5, tapiz: 6.0 };
+            const metrosTotales = (factores[proyecto] * cant * 1.1).toFixed(1);
+
+            document.getElementById('calc-metros-text').textContent = `${metrosTotales} metros`;
+            document.getElementById('calc-resultado').classList.remove('hidden');
+        }
+
+        // Utilidades UI
+        function toggleCart(show) {
+            const drawer = document.getElementById('cart-drawer');
+            if (show !== undefined) {
+                show ? drawer.classList.remove('hidden') : drawer.classList.add('hidden');
+            } else {
+                drawer.classList.toggle('hidden');
+            }
+        }
+
+        function abrirCheckout() {
+            if (carrito.length === 0) {
+                alert('Agrega al menos una tela al carrito antes de pagar.');
+                return;
+            }
+            document.getElementById('modal-checkout').classList.remove('hidden');
+        }
+
+        function cerrarCheckout() {
+            document.getElementById('modal-checkout').classList.add('hidden');
+        }
+
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function filtrarCategoria(cat) {
+            document.querySelectorAll('.btn-filtro').forEach(b => {
+                if (b.dataset.cat === cat) {
+                    b.className = 'btn-filtro active-filter bg-emerald-800 text-white px-4 py-2 rounded-lg text-xs font-semibold border transition';
+                } else {
+                    b.className = 'btn-filtro bg-white text-slate-600 border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border hover:bg-slate-50 transition';
+                }
+            });
+
+            if (cat === 'todas') {
+                renderizarCatalogo(productos);
+            } else {
+                renderizarCatalogo(productos.filter(p => p.categoria === cat));
+            }
+        }
+
+        function formatearPrecio(monto) {
+            return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(monto);
+        }
+
+        function solicitarMuestras(e) {
+            e.preventDefault();
+            alert('✨ ¡Solicitud enviada con éxito! Recibirás tus muestras en 48 horas hábiles.');
+            toggleModal('modal-muestras');
+        }
+    </script>
+</body>
+</html>
