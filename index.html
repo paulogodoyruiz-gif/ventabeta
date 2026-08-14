@@ -23,7 +23,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Configuración del Banner Superior -->
     <div class="bg-emerald-800 text-white text-xs font-medium py-2 px-4 text-center tracking-wide flex justify-between items-center px-6">
         <span>🎉 Envío gratis a todo el país por compras sobre $50.000</span>
         <div class="flex items-center space-x-4">
@@ -39,10 +38,8 @@
         </div>
     </div>
 
-    <!-- Navegación Principal -->
     <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-emerald-700 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-emerald-700/20">
                     T
@@ -53,14 +50,12 @@
                 </div>
             </div>
 
-            <!-- Menú de Navegación -->
             <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
                 <a href="#catalogo" class="hover:text-emerald-700 transition">Catálogo</a>
                 <a href="#calculadora" class="hover:text-emerald-700 transition">Calculadora de Metros</a>
                 <button onclick="toggleModal('modal-muestras')" class="hover:text-emerald-700 transition">Muestrario Gratis</button>
             </nav>
 
-            <!-- Acciones / Carrito -->
             <div class="flex items-center gap-4">
                 <button onclick="toggleCart()" class="relative p-2.5 rounded-full hover:bg-slate-100 transition text-slate-700">
                     <i data-lucide="shopping-bag" class="w-6 h-6"></i>
@@ -70,7 +65,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white py-16 md:py-24 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
             <div class="max-w-xl text-center md:text-left">
@@ -89,7 +83,6 @@
         </div>
     </section>
 
-    <!-- Filtros & Catálogo -->
     <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
             <div>
@@ -97,7 +90,6 @@
                 <p class="text-slate-500 text-sm mt-1">Selecciona el tipo de fibra y especifica la cantidad exacta de metros que necesitas.</p>
             </div>
 
-            <!-- Filtros de Categoría & Búsqueda -->
             <div class="flex flex-wrap items-center gap-3">
                 <button onclick="filtrarCategoria('todas')" class="btn-filtro active-filter px-4 py-2 rounded-lg text-xs font-semibold border transition" data-cat="todas">Todas</button>
                 <button onclick="filtrarCategoria('Lino')" class="btn-filtro bg-white text-slate-600 border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border hover:bg-slate-50 transition" data-cat="Lino">Lino</button>
@@ -107,7 +99,6 @@
             </div>
         </div>
 
-        <!-- Grilla de Productos -->
         <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <div class="col-span-full py-12 text-center">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-600 border-t-transparent"></div>
@@ -116,7 +107,6 @@
         </div>
     </main>
 
-    <!-- Calculadora de Metraje de Confección -->
     <section id="calculadora" class="bg-slate-100 py-16 border-t border-b border-slate-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-2xl shadow-xl p-8 border border-slate-200/80">
@@ -155,7 +145,6 @@
                     </div>
                 </div>
 
-                <!-- Resultado de la calculadora -->
                 <div id="calc-resultado" class="hidden mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 flex items-center justify-between">
                     <div>
                         <span class="text-xs text-emerald-700 font-semibold block">Metraje Recomendado:</span>
@@ -167,13 +156,11 @@
         </div>
     </section>
 
-    <!-- Carrito Lateral Slide-over -->
     <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
 
         <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
             <div class="pointer-events-auto w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
-                <!-- Encabezado Carrito -->
                 <div class="p-6 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-700"></i>
@@ -184,12 +171,10 @@
                     </button>
                 </div>
 
-                <!-- Lista de Ítems -->
                 <div id="cart-items" class="p-6 overflow-y-auto flex-1 space-y-4 divide-y divide-slate-100">
                     <p class="text-center text-slate-400 py-12 text-sm">Tu carrito está vacío.</p>
                 </div>
 
-                <!-- Footer Carrito / Checkout -->
                 <div class="p-6 border-t border-slate-100 bg-slate-50 space-y-4">
                     <div class="flex justify-between text-base font-bold text-slate-900">
                         <span>Total estimado</span>
@@ -205,7 +190,6 @@
         </div>
     </div>
 
-    <!-- Modal de Checkout / Pasarela de Pago Dinámica -->
     <div id="modal-checkout" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" onclick="cerrarCheckout()"></div>
@@ -239,7 +223,7 @@
                             <input type="radio" name="pago-metodo" value="mercadopago" checked class="text-emerald-600 focus:ring-emerald-500">
                             <div>
                                 <span class="text-xs font-bold block text-slate-800">Mercado Pago</span>
-                                <span class="text-[10px] text-emerald-700 font-medium">Oficial (Tarjetas / Cuotas)</span>
+                                <span class="text-[10px] text-emerald-700 font-medium">Pago Seguro (Redirección Real)</span>
                             </div>
                         </label>
                         <label class="border border-slate-200 hover:border-slate-300 rounded-xl p-3 flex items-center gap-3 cursor-pointer">
@@ -251,8 +235,13 @@
                         </label>
                     </div>
 
-                    <!-- Resumen -->
-                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mt-4">
+                    <!-- Optional Access Token input for direct client side fallback testing -->
+                    <div id="access-token-wrapper" class="pt-1">
+                        <label class="block text-[11px] text-slate-500 font-medium mb-1">Mercado Pago Access Token (Opcional si usas Vercel env MP_ACCESS_TOKEN):</label>
+                        <input type="password" id="mp-access-token" placeholder="APP_USR-xxxx... (Access Token de Mercado Pago)" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mt-2">
                         <div class="flex justify-between text-xs text-slate-600 mb-1">
                             <span>Subtotal telas</span>
                             <span id="checkout-subtotal">$0</span>
@@ -268,15 +257,14 @@
                     </div>
 
                     <button type="submit" id="btn-procesar-pago" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-700/20 transition flex items-center justify-center gap-2">
-                        <span id="btn-text">Pagar con Mercado Pago</span>
-                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span id="btn-text">Ir a Pagar con Mercado Pago</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal Muestrario Gratis -->
     <div id="modal-muestras" class="fixed inset-0 z-50 overflow-y-auto hidden">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="toggleModal('modal-muestras')"></div>
@@ -293,7 +281,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
@@ -315,21 +302,15 @@
         </div>
     </footer>
 
-    <!-- Script de Lógica y Algoritmos de la Aplicación -->
     <script>
-        // =========================================================================
-        // CONFIGURACIÓN DE CREDENCIALES
-        // =========================================================================
         const CONFIG = {
-            SUPABASE_URL: 'https://xyzcompany.supabase.co', // Poner tu URL de Supabase
-            SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Poner tu Key de Supabase
-            MERCADO_PAGO_PUBLIC_KEY: 'APP_USR-26cc0fdd-0997-4076-a64f-e13f9412ad31' // Tu Public Key de Mercado Pago
+            SUPABASE_URL: 'https://xyzcompany.supabase.co',
+            SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+            MERCADO_PAGO_PUBLIC_KEY: 'APP_USR-26cc0fdd-0997-4076-a64f-e13f9412ad31'
         };
 
-        // Instancia global de Mercado Pago SDK
         let mpInstance = null;
 
-        // Datos de respaldo (Fallback) en caso de no conectar la BD aún
         const PRODUCTOS_FALLBACK = [
             { id: '1', nombre: 'Lino Lavado Orgánico', categoria: 'Lino', precio_metro: 12900, imagen_url: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80', descripcion: '100% Lino europeo, ideal para cortinas y ropa de cama suave.' },
             { id: '2', nombre: 'Algodón Pima Peruano', categoria: 'Algodón', precio_metro: 8500, imagen_url: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80', descripcion: 'Fibra extra larga, máxima suavidad para confección de vestuario.' },
@@ -337,46 +318,51 @@
             { id: '4', nombre: 'Lana Merino Tapicería', categoria: 'Lana', precio_metro: 18900, imagen_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80', descripcion: 'Gran resistencia al roce, perfecta para tapizar sillones.' }
         ];
 
-        // Estado Global de la Aplicación
         let productos = [];
         let carrito = [];
         let supabaseClient = null;
 
-        // Inicializar iconos y app
         document.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
             inicializarMercadoPago();
             inicializarSupabase();
+            verificarStatusURL();
             await cargarProductos();
         });
 
-        // 1. Inicialización de Mercado Pago SDK v2
         function inicializarMercadoPago() {
             try {
                 if (window.MercadoPago && CONFIG.MERCADO_PAGO_PUBLIC_KEY) {
                     mpInstance = new MercadoPago(CONFIG.MERCADO_PAGO_PUBLIC_KEY, { locale: 'es-CL' });
-                    console.log('✅ Mercado Pago SDK v2 Inicializado con éxito.');
+                    console.log('✅ Mercado Pago SDK v2 Inicializado.');
                 }
             } catch (e) {
-                console.error('Error al inicializar Mercado Pago SDK:', e);
+                console.error('Error Mercado Pago SDK:', e);
             }
         }
 
-        // 2. Algoritmo de Inicialización de Supabase
+        function verificarStatusURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            if (status === 'success' || status === 'approved') {
+                alert('🎉 ¡Pago procesado con éxito! Muchas gracias por tu compra en Textiles Del Sur.');
+            } else if (status === 'failure' || status === 'rejected') {
+                alert('⚠️ El pago no pudo ser completado. Por favor intenta con otro medio de pago.');
+            }
+        }
+
         function inicializarSupabase() {
             try {
                 if (CONFIG.SUPABASE_URL.includes('xyzcompany')) {
-                    console.log('💡 Ejecutando en Modo Demo con datos locales.');
                     return;
                 }
                 supabaseClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
                 document.getElementById('db-status-badge').innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> BD & Mercado Pago Activos`;
             } catch (err) {
-                console.warn('Supabase no configurado aún, utilizando fallback.', err);
+                console.warn('Supabase no configurado.', err);
             }
         }
 
-        // 3. Algoritmo de Carga de Productos
         async function cargarProductos() {
             if (supabaseClient) {
                 const { data, error } = await supabaseClient.from('productos').select('*');
@@ -391,7 +377,6 @@
             renderizarCatalogo(productos);
         }
 
-        // 4. Renderizar Catálogo de Productos
         function renderizarCatalogo(lista) {
             const container = document.getElementById('grid-productos');
             container.innerHTML = lista.map(p => `
@@ -421,7 +406,6 @@
             lucide.createIcons();
         }
 
-        // 5. Algoritmo del Carrito de Compras
         function agregarAlCarrito(id) {
             const prod = productos.find(p => p.id === id);
             const existe = carrito.find(item => item.id === id);
@@ -449,11 +433,9 @@
         }
 
         function actualizarUI() {
-            // Actualizar Badge
             const totalItems = carrito.reduce((acc, i) => acc + 1, 0);
             document.getElementById('cart-badge').textContent = totalItems;
 
-            // Renderizar Items
             const cartItemsContainer = document.getElementById('cart-items');
             if (carrito.length === 0) {
                 cartItemsContainer.innerHTML = `<p class="text-center text-slate-400 py-12 text-sm">Tu carrito está vacío.</p>`;
@@ -478,21 +460,19 @@
                 `).join('');
             }
 
-            // Calcular Total
             const total = carrito.reduce((acc, item) => acc + (item.precio_metro * item.metros), 0);
             document.getElementById('cart-total-price').textContent = formatearPrecio(total);
             document.getElementById('checkout-subtotal').textContent = formatearPrecio(total);
             document.getElementById('checkout-total').textContent = formatearPrecio(total);
         }
 
-        // 6. Algoritmo de Checkout y Pasarela de Pago Oficial
         async function ejecutarAlgoritmoPago(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-procesar-pago');
             const btnText = document.getElementById('btn-text');
             
             btn.disabled = true;
-            btnText.textContent = 'Conectando con Mercado Pago...';
+            btnText.textContent = 'Generando enlace de Mercado Pago...';
 
             const orden = {
                 cliente_nombre: document.getElementById('cust-nombre').value,
@@ -504,42 +484,73 @@
                 items: carrito.map(i => ({ producto: i.nombre, metros: i.metros, subtotal: i.precio_metro * i.metros }))
             };
 
-            // A) Guardar en Supabase si está activo
-            if (supabaseClient) {
-                try {
-                    await supabaseClient.from('pedidos').insert([orden]);
-                } catch(err) {
-                    console.error("Error al guardar pedido:", err);
-                }
-            }
+            // Option A: Transferencia bancaria directa por WhatsApp
+            if (orden.metodo_pago === 'transferencia') {
+                const mensajeWA = `*Nuevo Pedido - Textiles Del Sur*%0A` +
+                    `*Cliente:* ${orden.cliente_nombre}%0A` +
+                    `*Dirección:* ${orden.direccion}%0A` +
+                    `*Total:* ${formatearPrecio(orden.total)}%0A` +
+                    `*Detalle:* %0A` + orden.items.map(i => `- ${i.producto}: ${i.metros}m`).join('%0A');
 
-            // B) Procesamiento de Pago
-            setTimeout(() => {
-                if (orden.metodo_pago === 'transferencia') {
-                    const mensajeWA = `*Nuevo Pedido - Textiles Del Sur*%0A` +
-                        `*Cliente:* ${orden.cliente_nombre}%0A` +
-                        `*Dirección:* ${orden.direccion}%0A` +
-                        `*Total:* ${formatearPrecio(orden.total)}%0A` +
-                        `*Detalle:* %0A` + orden.items.map(i => `- ${i.producto}: ${i.metros}m`).join('%0A');
-
-                    alert('✅ Pedido Registrado. Te redirigiremos a WhatsApp para enviar los datos de transferencia.');
-                    window.location.href = `https://wa.me/56912345678?text=${mensajeWA}`;
-                } else {
-                    // Integración Mercado Pago con Public Key Configurada
-                    alert(`💳 Conexión Exitosa con Mercado Pago (Clave: APP_USR-26cc...)\n\nRedirigiendo a la pasarela de cobro para procesar ${formatearPrecio(orden.total)}...`);
-                    
-                    carrito = [];
-                    actualizarUI();
-                    cerrarCheckout();
-                    toggleCart(false);
-                }
-
+                alert('✅ Pedido Registrado. Te redirigiremos a WhatsApp para enviar los datos de transferencia.');
+                window.location.href = `https://wa.me/56912345678?text=${mensajeWA}`;
                 btn.disabled = false;
                 btnText.textContent = 'Pagar con Mercado Pago';
-            }, 1000);
+                return;
+            }
+
+            // Option B: Generar Preferencia y Redirigir a Mercado Pago
+            const accessTokenManual = document.getElementById('mp-access-token').value.trim();
+
+            try {
+                // Call Vercel Serverless Function `/api/create-preference`
+                const response = await fetch('/api/create-preference', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items: orden.items,
+                        payer: { nombre: orden.cliente_nombre, email: orden.email },
+                        accessToken: accessTokenManual
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.init_point) {
+                    btnText.textContent = 'Redirigiendo a Mercado Pago...';
+                    window.location.href = data.init_point; // Redirección real al pago de Mercado Pago
+                } else if (accessTokenManual) {
+                    // Direct API Fallback call
+                    const directRes = await fetch('https://api.mercadopago.com/checkout/preferences', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessTokenManual}`
+                        },
+                        body: JSON.stringify({
+                            items: orden.items.map(i => ({ title: `${i.producto} (${i.metros}m)`, quantity: 1, currency_id: 'CLP', unit_price: Math.round(i.subtotal) })),
+                            payer: { name: orden.cliente_nombre, email: orden.email }
+                        })
+                    });
+                    const directData = await directRes.json();
+                    if (directData.init_point) {
+                        window.location.href = directData.init_point;
+                        return;
+                    }
+                    throw new Error(data.error || 'No se pudo generar la preferencia de pago.');
+                } else {
+                    alert('💳 Para activar la redirección automática a Mercado Pago, ingresa tu Access Token en el campo opcional o agrégalo en Vercel como variable de entorno MP_ACCESS_TOKEN.');
+                    btn.disabled = false;
+                    btnText.textContent = 'Ir a Pagar con Mercado Pago';
+                }
+            } catch (err) {
+                console.error('Error generando cobro Mercado Pago:', err);
+                alert('Ocurrió un inconveniente al conectar con Mercado Pago: ' + err.message);
+                btn.disabled = false;
+                btnText.textContent = 'Ir a Pagar con Mercado Pago';
+            }
         }
 
-        // 7. Calculadora de Metros
         function calcularMetrosProyecto() {
             const proyecto = document.getElementById('calc-proyecto').value;
             const cant = parseInt(document.getElementById('calc-cantidad').value) || 1;
@@ -551,7 +562,6 @@
             document.getElementById('calc-resultado').classList.remove('hidden');
         }
 
-        // Utilidades UI
         function toggleCart(show) {
             const drawer = document.getElementById('cart-drawer');
             if (show !== undefined) {
